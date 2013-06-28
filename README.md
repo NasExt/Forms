@@ -31,7 +31,7 @@ The best way to install is using [Composer](http://getcomposer.org/):
 Initialization in your `bootstrap.php`:
 
 ```php
-Nette\Forms\Controls\Rangeslider::register();
+\NasExt\Forms\Controls\RangeSlider::register();
 ```
 
 How to use RangeSlider in form:
