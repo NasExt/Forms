@@ -20,7 +20,7 @@ use Nette\Utils\Html;
 use Nette\Utils\Json;
 use Nette\Utils\Validators;
 
-class Rangeslider extends BaseControl
+class RangeSlider extends BaseControl
 {
 
 	/** @var array */
@@ -230,11 +230,11 @@ class Rangeslider extends BaseControl
 
 
 	/**
-	 * Adds addRangeslider() method to \Nette\Forms\Form
+	 * Adds addRangeSlider() method to \Nette\Forms\Form
 	 */
 	public static function register()
 	{
-		Container::extensionMethod('addRangeslider', callback(__CLASS__, 'addRangeslider'));
+		Container::extensionMethod('addRangeSlider', callback(__CLASS__, 'addRangeSlider'));
 	}
 
 
@@ -243,9 +243,9 @@ class Rangeslider extends BaseControl
 	 * @param string $name
 	 * @param null|string $label
 	 * @param array $range
-	 * @return Rangeslider provides fluent interface
+	 * @return RangeSlider provides fluent interface
 	 */
-	public static function addRangeslider(Container $container, $name, $label = NULL, array $range)
+	public static function addRangeSlider(Container $container, $name, $label = NULL, array $range)
 	{
 		$container[$name] = new self($label, $range);
 		return $container[$name];
