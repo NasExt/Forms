@@ -1,0 +1,15 @@
+.range-slider{
+    position: relative;
+    display: inline-block;
+}
+
+.range-slider input{
+    display: inline-block;
+    width: 20px;
+}
+
+.range-slider .ui-slider{
+    display: inline-block;
+    width: 300px;
+    margin: 0 10px;
+}
