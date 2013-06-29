@@ -34,7 +34,6 @@ class RangeSlider extends BaseControl
 	/**
 	 * @param null|string $label
 	 * @param Range $range
-	 * @throws InvalidArgumentException
 	 */
 	public function __construct($label = NULL, Range $range)
 	{
