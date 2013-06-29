@@ -10,8 +10,6 @@
 
 namespace NasExt\Forms\Controls;
 
-
-use Nette\Diagnostics\Debugger;
 use Nette\Forms\Container;
 use Nette\Forms\Controls\BaseControl;
 use Nette\Forms\Controls\TextBase;
@@ -23,11 +21,11 @@ use Nette\Utils\Validators;
 class RangeSlider extends BaseControl
 {
 
-	/** @var array */
-	protected $value = array();
+	/** @var array|Range */
+	protected $value;
 
-	/** @var array */
-	protected $range = array();
+	/** @var Range */
+	protected $range;
 
 	/** @var BaseControl */
 	protected $inputPrototype;
@@ -35,15 +33,11 @@ class RangeSlider extends BaseControl
 
 	/**
 	 * @param null|string $label
-	 * @param array $range
+	 * @param Range $range
 	 * @throws InvalidArgumentException
 	 */
-	public function __construct($label = NULL, array $range)
+	public function __construct($label = NULL, Range $range)
 	{
-		if (count($range) > 2) {
-			throw new InvalidArgumentException('The array $range can contain a maximum two values​​, max and min.');
-		}
-
 		parent::__construct($label);
 		$this->control->type = 'text';
 		$this->range = $range;
@@ -51,16 +45,17 @@ class RangeSlider extends BaseControl
 
 
 	/**
-	 * @param array $range
+	 * @param $min
+	 * @param $max
 	 */
-	public function setRange($range)
+	public function setRange($min, $max)
 	{
-		$this->range = $range;
+		$this->range->setRange($min, $max);
 	}
 
 
 	/**
-	 * @return array
+	 * @return Range
 	 */
 	public function getRange()
 	{
@@ -69,14 +64,18 @@ class RangeSlider extends BaseControl
 
 
 	/**
-	 * @return array|mixed
+	 * @param Range|array $value
+	 * @return $this|BaseControl
 	 */
-	public function getValueRange()
+	public function setValue($value)
 	{
-		if (!empty($this->value)) {
-			return $this->value;
+		if ($value instanceof Range) {
+			$this->value = $value;
+		} else {
+			list($min, $max) = $value;
+			$this->value = new Range($min, $max);
 		}
-		return $this->range;
+		return $this;
 	}
 
 
@@ -98,15 +97,19 @@ class RangeSlider extends BaseControl
 		$rangeSliderId = $this->htmlId . '-range-slider';
 		$rangeSlider = Html::el('div', array('id' => $rangeSliderId));
 
-		$values = $this->getValueRange();
+		if (!empty($this->value)) {
+			$values = $this->value;
+		} else {
+			$values = $this->range;
+		}
 		$dataSetup = array(
 			'rangeSliderId' => $rangeSliderId,
 			'minId' => $controls[0]->id,
 			'maxId' => $controls[1]->id,
-			'minValue' => $values[0],
-			'maxValue' => $values[1],
-			'min' => $this->range[0],
-			'max' => $this->range[1],
+			'minValue' => $values->getMin(),
+			'maxValue' => $values->getMax(),
+			'min' => $this->range->getMin(),
+			'max' => $this->range->getMax(),
 		);
 
 		$container = Html::el('div', array(
@@ -130,7 +133,13 @@ class RangeSlider extends BaseControl
 	{
 		$control = clone $this->getInputPrototype();
 		$control->id .= '-' . $key;
-		$values = $this->getValueRange();
+
+		if (!empty($this->value)) {
+			$values = $this->value->getRange();
+		} else {
+			$values = $this->range->getRange();
+		}
+
 		$control->value = $values[$key];
 
 		return $control;
@@ -143,7 +152,7 @@ class RangeSlider extends BaseControl
 	 */
 	public function isFilled()
 	{
-		if (empty($this->value[0]) || empty($this->value[1])) {
+		if ((string)$this->value->getMin() == '' || (string)$this->value->getMax() == '') {
 			return FALSE;
 		}
 		return TRUE;
@@ -210,7 +219,6 @@ class RangeSlider extends BaseControl
 		if ($this->inputPrototype) {
 			return $this->inputPrototype;
 		}
-
 		return $this->inputPrototype = $this->createInputPrototype();
 	}
 
@@ -242,20 +250,13 @@ class RangeSlider extends BaseControl
 	 * @param Container $container
 	 * @param string $name
 	 * @param null|string $label
-	 * @param array $range
+	 * @param Range $range
 	 * @return RangeSlider provides fluent interface
 	 */
-	public static function addRangeSlider(Container $container, $name, $label = NULL, array $range)
+	public static function addRangeSlider(Container $container, $name, $label = NULL, Range $range)
 	{
 		$container[$name] = new self($label, $range);
 		return $container[$name];
 	}
 
-}
-
-/**
- * The exception that is thrown when a set range more as two arguments.
- */
-class InvalidArgumentException extends \RuntimeException
-{
 }

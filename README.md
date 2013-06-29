@@ -36,19 +36,35 @@ Initialization in your `bootstrap.php`:
 
 How to use RangeSlider in form:
 ````php
-$form->addRangeslider('rangeSlider', 'Set range', array(10, 100));
+$range = new Range(10, 100);
+$form->addRangeslider('rangeSlider', 'Set range', $range);
 ```
 
-Set Default Value:
+Set Default Values:
 ````php
-$form->addRangeslider('rangeSlider', 'Set range', array(10, 100))
+$range = new Range(10, 100);
+$form->addRangeslider('rangeSlider', 'Set range', $range)
 	->setDefaultValue(array(15, 33));
+// or
+$form->addRangeslider('rangeSlider', 'Set range', $range)
+	->setDefaultValue(new Range(15, 33));
+```
+
+Get Values:
+````php
+$values = $form->getValues();
+$values['rangeSlider']; // return Range object
+// or
+$values['rangeSlider']->getMin();
+$values['rangeSlider']->getMax();
 ```
 
 Validation:
 ````php
-$form->addRangeslider('rangeSlider', 'Set range', array(10, 100))
-	->addRule($form::FILLED, 'You must set fields')
-	->addRule($form::INTEGER, 'Fields must contain only numbers')
-	->addRule($form::RANGE, 'You can set a value from %d to %d', array(10, 100));
+->addRule($form::FILLED, 'Please complete mandatory field')
+->addRule($form::INTEGER, 'Please enter a numeric value')
+->addRule($form::FLOAT, 'Please enter a numeric value')
+->addRule($form::RANGE, 'Please enter a value between %d and %d', array(10, 100))
+// or
+->addRule($form::RANGE, 'Please enter a value between %d and %d', $range->getRange())
 ```
