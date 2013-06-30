@@ -3,13 +3,13 @@
 /**
  * This file is part of the NasExt extensions of Nette Framework
  *
- * @license    MIT
- * @link       https://github.com/NasExt
- * @author     Dusan Hudak
+ * Copyright (c) 20013 Dusan Hudak (http://dusan-hudak.com)
+ *
+ * For the full copyright and license information, please view
+ * the file license.txt that was distributed with this source code.
  */
 
 namespace NasExt\Forms\Controls;
-
 use Nette\Forms\Container;
 use Nette\Forms\Controls\BaseControl;
 use Nette\Forms\Controls\TextBase;
@@ -17,6 +17,12 @@ use Nette\Forms\IControl;
 use Nette\Utils\Html;
 use Nette\Utils\Json;
 use Nette\Utils\Validators;
+
+/**
+ * RangeSlider Form control built on jQuery UI range slider.
+ *
+ * @author Dusan Hudak
+ */
 
 class RangeSlider extends BaseControl
 {
