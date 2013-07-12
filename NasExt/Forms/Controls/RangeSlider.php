@@ -37,7 +37,7 @@ class RangeSlider extends BaseControl
 	protected $inputPrototype;
 
 	/** @var  array */
-	protected $attributes;
+	protected $attributes = array();
 
 
 	/**
