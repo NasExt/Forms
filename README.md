@@ -68,3 +68,8 @@ Validation:
 // or
 ->addRule($form::RANGE, 'Please enter a value between %d and %d', $range->getRange())
 ```
+
+Custom init js:
+````php
+->setAttribute('data-custom-init', Nette\Utils\Json::encode(array('step'=>2)))
+```
