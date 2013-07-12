@@ -1,15 +1,35 @@
-.range-slider{
+/**
+ * This file is part of the NasExt extensions of Nette Framework
+ *
+ * Copyright (c) 20013 Dusan Hudak (http://dusan-hudak.com)
+ *
+ * For the full copyright and license information, please view
+ * the file license.txt that was distributed with this source code.
+ */
+
+.range-slider-control {
     position: relative;
-    display: inline-block;
+    display: block;
+    min-width: 300px;
 }
 
-.range-slider input{
-    display: inline-block;
+.range-slider-control .range-slider-min-container {
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+.range-slider-control .range-container {
+    display: block;
+    padding: 9px 45px 0 45px;
+}
+
+.range-slider-control .range-slider-max-container {
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
+.range-slider-control input {
     width: 20px;
-}
-
-.range-slider .ui-slider{
-    display: inline-block;
-    width: 300px;
-    margin: 0 10px;
 }

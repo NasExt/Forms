@@ -36,6 +36,9 @@ class RangeSlider extends BaseControl
 	/** @var BaseControl */
 	protected $inputPrototype;
 
+	/** @var  array */
+	protected $attributes;
+
 
 	/**
 	 * @param null|string $label
@@ -70,7 +73,7 @@ class RangeSlider extends BaseControl
 
 	/**
 	 * @param Range|array $value
-	 * @return $this|BaseControl
+	 * @return RangeSlider  provides a fluent interface
 	 */
 	public function setValue($value)
 	{
@@ -80,6 +83,18 @@ class RangeSlider extends BaseControl
 			list($min, $max) = $value;
 			$this->value = new Range($min, $max);
 		}
+		return $this;
+	}
+
+	/**
+	 * Changes control's HTML attribute.
+	 * @param  string $name
+	 * @param  mixed $value
+	 * @return RangeSlider  provides a fluent interface
+	 */
+	public function setAttribute($name, $value = TRUE)
+	{
+		$this->attributes[$name] = $value;
 		return $this;
 	}
 
@@ -99,14 +114,34 @@ class RangeSlider extends BaseControl
 			$controls[] = $this->getControlItem($key);
 		}
 
-		$rangeSliderId = $this->htmlId . '-range-slider';
-		$rangeSlider = Html::el('div', array('id' => $rangeSliderId));
+		$rangeMinContainer = Html::el('div');
+		$rangeMinContainer->addId($this->htmlId . '-min-container');
+		$rangeMinContainer->addClass('range-slider-min-container');
+		$rangeMinContainer->add($controls[0]);
+
+		$rangeContainer = Html::el('div');
+		$rangeContainer->addId($this->htmlId . '-range-container');
+		$rangeContainer->addClass('range-container');
+
+		$rangeSliderId = $this->htmlId . '-slider';
+		$rangeSlider = Html::el('div');
+		$rangeSlider->addId($rangeSliderId);
+		$rangeSlider->addClass('range-slider');
+
+		$rangeContainer->add($rangeSlider);
+
+		$rangeMaxContainer = Html::el('div');
+		$rangeMaxContainer->addId($this->htmlId . '-max-container');
+		$rangeMaxContainer->addClass('range-slider-max-container');
+		$rangeMaxContainer->add($controls[1]);
+
 
 		if (!empty($this->value)) {
 			$values = $this->value;
 		} else {
 			$values = $this->range;
 		}
+
 		$dataSetup = array(
 			'rangeSliderId' => $rangeSliderId,
 			'minId' => $controls[0]->id,
@@ -117,15 +152,15 @@ class RangeSlider extends BaseControl
 			'max' => $this->range->getMax(),
 		);
 
-		$container = Html::el('div', array(
-			'id' => $this->htmlId . '-container',
-			'class' => 'range-slider',
-			'data-setup' => Json::encode($dataSetup)
-		));
+		$container = Html::el('div');
+		$container->addId($this->htmlId . '-control');
+		$container->addClass('range-slider-control');
+		$container->data['init'] = Json::encode($dataSetup);
+		$container->addAttributes($this->attributes);
+		$container->add($rangeMinContainer);
+		$container->add($rangeContainer);
+		$container->add($rangeMaxContainer);
 
-		$container->add($controls[0]);
-		$container->add($rangeSlider);
-		$container->add($controls[1]);
 		return $container;
 	}
 

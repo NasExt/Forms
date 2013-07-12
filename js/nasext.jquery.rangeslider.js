@@ -1,11 +1,20 @@
+/**
+ * This file is part of the NasExt extensions of Nette Framework
+ *
+ * Copyright (c) 20013 Dusan Hudak (http://dusan-hudak.com)
+ *
+ * For the full copyright and license information, please view
+ * the file license.txt that was distributed with this source code.
+ */
+
 $(document).ready(function () {
 
-    $('.range-slider').each(function () {
+    $('.range-slider-control').each(function () {
         var $init = {
             range: true
         };
 
-        var $systemSetup = $(this).data('setup');
+        var $systemSetup = $(this).data('init');
         var $setup = {
             min: $systemSetup.min,
             max: $systemSetup.max,
@@ -16,6 +25,9 @@ $(document).ready(function () {
             }
         };
         $.extend($init, $setup);
+        if ($(this).data('customInit')) {
+            $.extend($init, $(this).data('customInit'));
+        }
 
         $(this).find('#' + $systemSetup.rangeSliderId).slider($init);
 
