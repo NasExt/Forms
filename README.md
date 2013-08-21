@@ -62,11 +62,11 @@ $values['rangeSlider']->getMax();
 Validation:
 ````php
 ->addRule($form::FILLED, 'Please complete mandatory field')
-->addRule($form::INTEGER, 'Please enter a numeric value')
-->addRule($form::FLOAT, 'Please enter a numeric value')
-->addRule($form::RANGE, 'Please enter a value between %d and %d', array(10, 100))
+->addRule(RangeSlider::INTEGER, 'Please enter a numeric value')
+->addRule(RangeSlider::FLOAT, 'Please enter a numeric value')
+->addRule(RangeSlider::RANGE, 'Please enter a value between %d and %d', array(10, 100))
 // or
-->addRule($form::RANGE, 'Please enter a value between %d and %d', $range->getRange())
+->addRule(RangeSlider::RANGE, 'Please enter a value between %d and %d', $range->getRange())
 ```
 
 Custom init js:
