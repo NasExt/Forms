@@ -10,9 +10,10 @@
  */
 
 namespace NasExt\Forms\Controls;
+
+use Nette\Application\UI\Form;
 use Nette\Forms\Container;
 use Nette\Forms\Controls\BaseControl;
-use Nette\Forms\Controls\TextBase;
 use Nette\Forms\IControl;
 use Nette\Utils\Html;
 use Nette\Utils\Json;
@@ -26,6 +27,10 @@ use Nette\Utils\Validators;
 
 class RangeSlider extends BaseControl
 {
+	/** Validators */
+	const INTEGER = '\NasExt\Forms\Controls\RangeSlider::validateInteger';
+	const RANGE = '\NasExt\Forms\Controls\RangeSlider::validateRange';
+	const FLOAT = '\NasExt\Forms\Controls\RangeSlider::validateFloat';
 
 	/** @var array|Range */
 	protected $value;
@@ -49,6 +54,7 @@ class RangeSlider extends BaseControl
 		parent::__construct($label);
 		$this->control->type = 'text';
 		$this->range = $range;
+		$this->setValue($range);
 	}
 
 
@@ -72,6 +78,28 @@ class RangeSlider extends BaseControl
 
 
 	/**
+	 * Loads HTTP data.
+	 * @return void
+	 */
+	public function loadHttpData()
+	{
+		$defaults = $this->getValue();
+		$this->setValue($this->getHttpData(Form::DATA_TEXT, '[]'));
+		if ($this->value !== NULL) {
+			foreach ($this->value as $value) {
+				if (is_array($this->disabled) && isset($this->disabled[$value])) {
+					$this->value = NULL;
+					break;
+				}
+			}
+		}
+		if ($defaults && is_array($this->disabled)) {
+			$this->setDefaultValue($defaults);
+		}
+	}
+
+
+	/**
 	 * @param Range|array $value
 	 * @return RangeSlider  provides a fluent interface
 	 */
@@ -85,6 +113,7 @@ class RangeSlider extends BaseControl
 		}
 		return $this;
 	}
+
 
 	/**
 	 * Changes control's HTML attribute.
@@ -242,7 +271,8 @@ class RangeSlider extends BaseControl
 	public static function validateFloat(IControl $control)
 	{
 		foreach ($control->getValue() as $value) {
-			$validator = Validators::isNumeric(TextBase::filterFloat($value));
+			$validator = Validators::isNumeric(str_replace(array(' ', ','), array('', '.'), $value));
+
 			if ($validator == FALSE) {
 				return FALSE;
 			}
@@ -298,5 +328,4 @@ class RangeSlider extends BaseControl
 		$container[$name] = new self($label, $range);
 		return $container[$name];
 	}
-
 }
