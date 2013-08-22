@@ -22,7 +22,7 @@ The best way to install is using [Composer](http://getcomposer.org/):
     }
 ],
 "require": {
-		"NasExt/Forms": "dev-master"
+		"NasExt/Forms": "~2.0"
 	}
 ```
 
