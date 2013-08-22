@@ -1,16 +1,12 @@
 {
-	"name": "NasExt/Forms",
+	"name": "nasext/forms",
 	"type": "library",
 	"description": "Extra form components for Nette Framework.",
-	"keywords": ["nette", "form"],
-	"license": ["BSD-3-Clause", "GPL-2.0", "GPL-3.0"],
+	"keywords": ["nette", "nasext", "form"],
+	"license": ["MIT"],
 	"authors": [
 		{
 			"name": "Dusan Hudak"
-		},
-		{
-			"name": "NasExt",
-			"homepage": "https://github.com/NasExt/Forms/graphs/contributors"
 		}
 	],
 	"require": {
